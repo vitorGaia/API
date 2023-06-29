@@ -28,7 +28,7 @@ const findByIdSales = async (saleId) => {
     [saleId],
   );
 
-  return sales;
+  if (sales.length !== 0) return sales;
 };
 
 // console.log(findByIdSales(1).then((res) => console.log(res)));
