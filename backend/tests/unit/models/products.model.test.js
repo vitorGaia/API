@@ -5,6 +5,7 @@ const { productsModel } = require('../../../src/models');
 const {
   findAllProductsResponseOk,
   findByIdProductsResponseOk,
+  insertProductsResponseOk,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS MODEL', function () {
@@ -25,6 +26,16 @@ describe('Testes PRODUCTS MODEL', function () {
 
     expect(product).to.be.an('object');
     expect(product).to.be.deep.equal(findByIdProductsResponseOk);
+  });
+
+  it('Insere produto no banco de dados com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([insertProductsResponseOk]);
+
+    const inputInsert = { name: 'Capacete do Pacificador' };
+    const response = await productsModel.insertProducts(inputInsert);
+
+    expect(response).to.be.an('object');
+    expect(response.name).to.equal('Capacete do Pacificador');
   });
 
   afterEach(function () {

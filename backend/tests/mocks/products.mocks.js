@@ -12,7 +12,6 @@ const findAllProductsResponseOk = [
     name: 'Escudo do CapitÃ£o AmÃ©rica',
   },
 ];
-
 const findAllProductsResponseOkNormalized = [
   {
     id: 1,
@@ -36,9 +35,15 @@ const findByIdProductsResponseError = {
   message: 'Product not found',
 };
 
+const insertProductsResponseOk = {
+  id: 5,
+  name: 'Capacete do Pacificador',
+};
+
 module.exports = {
   findAllProductsResponseOk,
   findAllProductsResponseOkNormalized,
   findByIdProductsResponseOk,
   findByIdProductsResponseError,
+  insertProductsResponseOk,
 };

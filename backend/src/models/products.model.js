@@ -14,8 +14,6 @@ const findByIdProducts = async (productId) => {
   return product;
 };
 
-// const test = { name: 'ProdutoX' };
-
 const insertProducts = async (product) => {
   const columns = getFormattedQuery.getFormattedColumnNames(product);
   const placeholders = getFormattedQuery.getFormattedPlaceholders(product);

@@ -10,6 +10,7 @@ const { productsController } = require('../../../src/controllers');
 const {
   findAllProductsResponseOk,
   findByIdProductsResponseOk,
+  insertProductsResponseOk,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS CONTROLLERS', function () {
@@ -53,5 +54,32 @@ describe('Testes PRODUCTS CONTROLLERS', function () {
 
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(findByIdProductsResponseOk);
+  });
+
+  it('Insere produto com sucesso', async function () {
+    sinon.stub(productsService, 'insertProducts').resolves({
+      status: 'SUCCESSFUL',
+      data: insertProductsResponseOk,
+    });
+
+    const inputInsert = { name: 'Capacete do Pacificador' };
+
+    const req = {
+      params: { },
+      body: inputInsert,
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.insertProducts(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(insertProductsResponseOk);
+  });
+
+  afterEach(function () {
+    sinon.restore();
   });
 });

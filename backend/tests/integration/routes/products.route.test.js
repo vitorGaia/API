@@ -6,28 +6,41 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 const app = require('../../../src/app');
-// const { productsRoutes } = require('../../../src/routes');
-// const { productsController } = require('../../../src/controllers');
+const connection = require('../../../src/models/connection');
 
 const {
+  findAllProductsResponseOkNormalized,
   findByIdProductsResponseOk,
   findByIdProductsResponseError,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS ROUTES', function () {
-  /* it('Recupera todos os produtos /products', async function () {
+  it('Recupera todos os produtos /products', async function () {
+    this.timeout(5000);
+
     const stubResponse = {
       status: 200,
       body: findAllProductsResponseOkNormalized,
     };
 
-    sinon.stub(productsController, 'findAllProducts').resolves(stubResponse);
+    sinon.stub(connection, 'execute')
+      .onFirstCall()
+      .resolves([findAllProductsResponseOkNormalized])
+      .onSecondCall()
+      .resolves(findAllProductsResponseOkNormalized)
+      .onCall(2)
+      .resolves({
+        status: 'SUCCESSFUL',
+        data: findAllProductsResponseOkNormalized,
+      })
+      .onCall(3)
+      .resolves(stubResponse);
 
     const response = await chai.request(app).get('/products');
     
     expect(response).to.have.status(200);
-    expect(response.body).to.deep.equal(findAllProductsResponseOkNormalized);
-  }); */
+    expect(response.body).to.be.deep.equal(findAllProductsResponseOkNormalized);
+  });
 
   it('Recupera produto por id /products/:id com sucesso', async function () {
     const response = await chai
