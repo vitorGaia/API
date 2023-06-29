@@ -16,11 +16,13 @@
     "lint": "eslint --no-error-on-unmatched-pattern ."
   },
   "dependencies": {
+    "camelize": "^1.0.1",
     "@hapi/boom": "9.1.0",
     "express": "4.18.2",
     "express-async-errors": "3.1.1",
     "joi": "17.6.0",
-    "mysql2": "2.3.0"
+    "mysql2": "2.3.0",
+    "snakeize": "^0.1.0"
   },
   "devDependencies": {
     "eslint-config-trybe-backend": "2.1.0",
