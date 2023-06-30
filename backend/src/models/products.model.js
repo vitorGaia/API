@@ -25,10 +25,27 @@ const insertProducts = async (product) => {
   return { id: insertId, ...product };
 };
 
-// console.log(insertProducts(test).then((res) => console.log(res)));
+const updateProducts = async ({ name }, id) => {
+  const res = await findAllProducts();
+  const ids = res.map((product) => product.id);
+
+  if (!(id in ids)) return undefined;
+  
+  await connection.execute(
+    `UPDATE products
+    SET name = ?
+    WHERE id = ?;`,
+    [name, id],
+  );
+
+  return { id, name };
+};
+
+// console.log(updateProducts(test, 2).then((res) => console.log(res)));
 
 module.exports = {
   findAllProducts,
   findByIdProducts,
   insertProducts,
+  updateProducts,
 };

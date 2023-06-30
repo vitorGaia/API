@@ -33,6 +33,7 @@ const validateQuantity = (req, res, next) => {
 };
 
 module.exports = {
+  getIds,
   validateQuantity,
   validateProductId,
 };

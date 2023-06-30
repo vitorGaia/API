@@ -18,8 +18,17 @@ const insertProducts = async (product) => {
   return { status: 'CREATED', data: newProduct };
 };
 
+const updateProducts = async (product, id) => {
+  const response = await productsModel.updateProducts(product, id);
+
+  if (!response) return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+
+  return { status: 'SUCCESSFUL', data: response };
+};
+
 module.exports = {
   findAllProducts,
   findByIdProducts,
   insertProducts,
+  updateProducts,
 };
