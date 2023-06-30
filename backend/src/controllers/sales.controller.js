@@ -12,7 +12,13 @@ const findByIdSales = async (req, res) => {
   res.status(mapStatusHTTP(status)).json(data);
 };
 
+const insertSales = async (req, res) => {
+  const { status, data } = await salesService.insertSales(req.body);
+  res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   findAllSales,
   findByIdSales,
+  insertSales,
 };
