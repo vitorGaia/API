@@ -5,6 +5,7 @@ const { salesModel } = require('../../../src/models');
 const {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
+  insertSalesResponseOk,
 } = require('../../mocks/sales.mocks');
 
 describe('Testes SALES MODEL', function () {
@@ -34,6 +35,29 @@ describe('Testes SALES MODEL', function () {
     const sales = await salesModel.findByIdSales(999);
 
     expect(sales).to.be.deep.equal(undefined);
+  });
+
+  it('Isere produtos vendidos com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([{ insertId: 3 }])
+    .onSecondCall()
+    .resolves(insertSalesResponseOk);
+
+    const input = [
+      {
+        productId: 1,
+        quantity: 27,
+      },
+      {
+        productId: 2,
+        quantity: 27,
+      },
+    ];
+    const response = await salesModel.insertSales(input);
+
+    expect(response).to.be.an('object');
+    expect(response).to.be.deep.equal(insertSalesResponseOk);
   });
 
   afterEach(function () {

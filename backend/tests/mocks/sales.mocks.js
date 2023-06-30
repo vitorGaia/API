@@ -32,7 +32,22 @@ const findByIdSalesResponseOk = [
   },
 ];
 
+const insertSalesResponseOk = {
+  id: 3,
+  itemsSold: [
+    {
+      productId: 1,
+      quantity: 27,
+    },
+    {
+      productId: 2,
+      quantity: 27,
+    },
+  ],
+};
+
 module.exports = {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
+  insertSalesResponseOk,
 };

@@ -10,6 +10,7 @@ const { salesController } = require('../../../src/controllers');
 const {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
+  insertSalesResponseOk,
 } = require('../../mocks/sales.mocks');
 
 describe('Testes SALES CONTROLLERS', function () {
@@ -53,5 +54,32 @@ describe('Testes SALES CONTROLLERS', function () {
 
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(findByIdSalesResponseOk);
+  });
+
+  it('Insere vendas com sucesso', async function () {
+    sinon.stub(salesService, 'insertSales').resolves({ status: 'CREATED', data: insertSalesResponseOk });
+
+    const req = {
+      params: {},
+      body: [
+        {
+          productId: 1,
+          quantity: 27,
+        },
+        {
+          productId: 2,
+          quantity: 27,
+        },
+      ],
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.insertSales(req, res);
+
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(insertSalesResponseOk);
   });
 });

@@ -5,6 +5,7 @@ const { salesModel } = require('../../../src/models');
 const {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
+  insertSalesResponseOk,
 } = require('../../mocks/sales.mocks');
 
 describe('Testes SALES SERVICES', function () {
@@ -38,6 +39,26 @@ describe('Testes SALES SERVICES', function () {
     expect(status).to.be.equal('NOT_FOUND');
     expect(data.message).to.be.a('string');
     expect(data.message).to.be.equal('Sale not found');
+  });
+
+  it('Insere vendas no banco de dados com sucesso', async function () {
+    sinon.stub(salesModel, 'insertSales').resolves(insertSalesResponseOk);
+
+    const input = [
+      {
+        productId: 1,
+        quantity: 27,
+      },
+      {
+        productId: 2,
+        quantity: 27,
+      },
+    ];
+    const { status, data } = await salesService.insertSales(input);
+
+    expect(status).to.be.equal('CREATED');
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal(insertSalesResponseOk);
   });
 
   afterEach(function () {
