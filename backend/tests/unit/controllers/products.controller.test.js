@@ -11,6 +11,7 @@ const {
   findAllProductsResponseOk,
   findByIdProductsResponseOk,
   insertProductsResponseOk,
+  updateProductsResponseOk,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS CONTROLLERS', function () {
@@ -77,6 +78,62 @@ describe('Testes PRODUCTS CONTROLLERS', function () {
 
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(insertProductsResponseOk);
+  });
+
+  it('Atualiza um produto com sucesso', async function () {
+    sinon.stub(productsService, 'updateProducts').resolves({
+      status: 'SUCCESSFUL',
+      data: updateProductsResponseOk,
+    });
+
+    const req = {
+      params: { id: 1 },
+      body: { name: 'Capacete do Pacificador' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.updateProducts(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updateProductsResponseOk);
+  });
+
+  it('Deleta um produto com id inexistente', async function () {
+    sinon.stub(productsService, 'deleteProducts').resolves({ status: 'NOT_FOUND', data: { message: 'Product not found' } });
+
+    const req = {
+      params: { id: 999 },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.deleteProducts(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+
+  it('Deleta um produto com sucesso', async function () {
+    sinon.stub(productsService, 'deleteProducts').resolves({ status: 'DELETED' });
+
+    const req = {
+      params: { id: 1 },
+      body: { },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      send: sinon.stub(),
+    };
+
+    await productsController.deleteProducts(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
   });
 
   afterEach(function () {

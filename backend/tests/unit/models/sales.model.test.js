@@ -60,6 +60,34 @@ describe('Testes SALES MODEL', function () {
     expect(response).to.be.deep.equal(insertSalesResponseOk);
   });
 
+  it('tenta deletar uma venda com id inexistente', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllSalesResponseOk])
+    .onSecondCall()
+    .resolves()
+    .onThirdCall()
+    .resolves();
+
+    const response = await salesModel.deleteSales(999);
+
+    expect(response).to.be.an('undefined');
+  });
+
+  it('Deleta uma venda com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllSalesResponseOk])
+    .onSecondCall()
+    .resolves()
+    .onThirdCall()
+    .resolves();
+  
+    const response = await salesModel.deleteSales(1);
+  
+    expect(response).to.equal('DELETED');
+  });
+
   afterEach(function () {
     sinon.restore();
   });

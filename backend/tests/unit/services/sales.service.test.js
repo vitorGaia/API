@@ -61,6 +61,24 @@ describe('Testes SALES SERVICES', function () {
     expect(data).to.be.deep.equal(insertSalesResponseOk);
   });
 
+  it('Tenta deletar uma venda que não existe', async function () {
+    sinon.stub(salesModel, 'deleteSales').resolves(undefined);
+
+    const { status, data } = await salesService.deleteSales(1);
+
+    expect(status).to.be.equal('NOT_FOUND');
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal({ message: 'Sale not found' });
+  });
+
+  it('Deleta uma venda com sucesso', async function () {
+    sinon.stub(salesModel, 'deleteSales').resolves('DELETED');
+
+    const { status } = await salesService.deleteSales(1);
+
+    expect(status).to.be.equal('DELETED');
+  });
+
   afterEach(function () {
     sinon.restore();
   });

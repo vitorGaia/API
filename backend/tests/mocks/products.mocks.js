@@ -40,10 +40,16 @@ const insertProductsResponseOk = {
   name: 'Capacete do Pacificador',
 };
 
+const updateProductsResponseOk = {
+  id: 1,
+  name: 'Capacete do Pacificador',
+};
+
 module.exports = {
   findAllProductsResponseOk,
   findAllProductsResponseOkNormalized,
   findByIdProductsResponseOk,
   findByIdProductsResponseError,
   insertProductsResponseOk,
+  updateProductsResponseOk,
 };

@@ -26,8 +26,8 @@ const insertProducts = async (product) => {
 };
 
 const updateProducts = async ({ name }, id) => {
-  const res = await findAllProducts();
-  const ids = res.map((product) => product.id);
+  const [products] = await connection.query('SELECT * FROM products');
+  const ids = products.map((product) => product.id);
 
   if (!(id in ids)) return undefined;
   
@@ -42,8 +42,8 @@ const updateProducts = async ({ name }, id) => {
 };
 
 const deleteProducts = async (id) => {
-  const res = await findAllProducts();
-  const ids = res.map((product) => product.id);
+  const [products] = await connection.query('SELECT * FROM products');
+  const ids = products.map((product) => product.id);
 
   if (!ids.includes(+id)) return undefined;
 

@@ -58,8 +58,12 @@ const insertSales = async (sales) => {
 };
 
 const deleteSales = async (id) => {
-  const allSales = await findAllSales();
-  const ids = allSales.map(({ saleId }) => saleId);
+  const [sales] = await connection.execute(
+    `SELECT sp.sale_id AS saleId, s.date, sp.product_id AS productId, sp.quantity
+    FROM sales_products AS sp
+    INNER JOIN sales AS s ON sp.sale_id = s.id`,
+  );
+  const ids = sales.map(({ saleId }) => saleId);
   
   if (!ids.includes(+id)) return undefined;
 

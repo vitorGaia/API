@@ -6,9 +6,12 @@ const {
   findAllProductsResponseOk,
   findByIdProductsResponseOk,
   insertProductsResponseOk,
+  findAllProductsResponseOkNormalized,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS MODEL', function () {
+  const inputInsert = { name: 'Capacete do Pacificador' };
+
   it('Recupera todos os produtos com sucesso', async function () {
     sinon.stub(connection, 'execute').resolves([findAllProductsResponseOk]);
 
@@ -31,22 +34,61 @@ describe('Testes PRODUCTS MODEL', function () {
   it('Insere produto no banco de dados com sucesso', async function () {
     sinon.stub(connection, 'execute').resolves([insertProductsResponseOk]);
 
-    const inputInsert = { name: 'Capacete do Pacificador' };
     const response = await productsModel.insertProducts(inputInsert);
 
     expect(response).to.be.an('object');
     expect(response.name).to.equal('Capacete do Pacificador');
   });
 
-  /* it('Deleta um prouto com sucesso', async function () {
-    sinon.stub(productsModel, 'findAllProducts').resolves(findAllProductsResponseOk);
-    sinon.stub(connection, 'execute').resolves();
+  it('tenta atualizar um produto com id inexistente', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves()
+    .onSecondCall()
+    .resolves();
 
+    const response = await productsModel.updateProducts(inputInsert, 999);
+
+    expect(response).to.be.an('undefined');
+  });
+
+  it('Atualiza um produto com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllProductsResponseOkNormalized])
+    .onSecondCall()
+    .resolves();
+
+    const response = await productsModel.updateProducts(inputInsert, 1);
+
+    expect(response).to.be.an('object');
+    expect(response.id).to.equal(1);
+    expect(response.name).to.equal('Capacete do Pacificador');
+  });
+
+  it('tenta deletar um produto com id inexistente', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves()
+    .onSecondCall()
+    .resolves();
+
+    const response = await productsModel.deleteProducts(999);
+
+    expect(response).to.be.an('undefined');
+  });
+
+  it('Deleta um produto com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllProductsResponseOkNormalized])
+    .onSecondCall()
+    .resolves();
+  
     const response = await productsModel.deleteProducts(3);
-
-    expect(response).to.be.an('string');
+  
     expect(response).to.equal('DELETED');
-  }); */
+  });
 
   afterEach(function () {
     sinon.restore();
