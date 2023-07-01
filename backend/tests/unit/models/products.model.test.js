@@ -38,6 +38,16 @@ describe('Testes PRODUCTS MODEL', function () {
     expect(response.name).to.equal('Capacete do Pacificador');
   });
 
+  /* it('Deleta um prouto com sucesso', async function () {
+    sinon.stub(productsModel, 'findAllProducts').resolves(findAllProductsResponseOk);
+    sinon.stub(connection, 'execute').resolves();
+
+    const response = await productsModel.deleteProducts(3);
+
+    expect(response).to.be.an('string');
+    expect(response).to.equal('DELETED');
+  }); */
+
   afterEach(function () {
     sinon.restore();
   });

@@ -57,10 +57,32 @@ const insertSales = async (sales) => {
   return formatReturn;
 };
 
+const deleteSales = async (id) => {
+  const allSales = await findAllSales();
+  const ids = allSales.map(({ saleId }) => saleId);
+  
+  if (!ids.includes(+id)) return undefined;
+
+  await connection.execute(
+    `DELETE FROM sales
+    WHERE id = ?`,
+    [id],
+  );
+
+  await connection.execute(
+    `DELETE FROM sales_products
+    WHERE sale_id = ?`,
+    [id],
+  );
+
+  return 'DELETED';
+};
+
 // console.log(insertSales(test).then((res) => console.log(res)));
 
 module.exports = {
   findAllSales,
   findByIdSales,
   insertSales,
+  deleteSales,
 };
