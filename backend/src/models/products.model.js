@@ -56,7 +56,15 @@ const deleteProducts = async (id) => {
   return 'DELETED';
 };
 
-// console.log(updateProducts(test, 2).then((res) => console.log(res)));
+const findByNameProducts = async (productName) => {
+  const [products] = await connection.execute('SELECT * FROM products');
+
+  const filteredProducts = products.filter(({ name }) => name.includes(productName));
+
+  if (filteredProducts) return filteredProducts;
+
+  return products;
+};
 
 module.exports = {
   findAllProducts,
@@ -64,4 +72,5 @@ module.exports = {
   insertProducts,
   updateProducts,
   deleteProducts,
+  findByNameProducts,
 };

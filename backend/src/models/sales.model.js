@@ -82,11 +82,39 @@ const deleteSales = async (id) => {
   return 'DELETED';
 };
 
-// console.log(insertSales(test).then((res) => console.log(res)));
+const query = `
+SELECT sp.sale_id AS saleId, sp.product_id AS productId, sp.quantity, s.date
+FROM sales_products sp
+JOIN sales s ON sp.sale_id = s.id
+WHERE sp.sale_id = ? AND sp.product_id = ?`;
+
+const updateSales = async (saleId, productId, { quantity }) => {
+  const [sales] = await connection.execute(
+    `SELECT sp.sale_id AS saleId, s.date, sp.product_id AS productId, sp.quantity
+    FROM sales_products AS sp INNER JOIN sales AS s ON sp.sale_id = s.id`,
+  );
+
+  const saleIds = sales.map((sale) => sale.saleId);
+  const productIds = sales.map((product) => product.productId);
+  
+  if (!saleIds.includes(+saleId)) return 'Sale not found';
+  if (!productIds.includes(+productId)) return 'Product not found in sale';
+
+  await connection.execute(
+    `UPDATE sales_products SET quantity = ?
+    WHERE sale_id = ? AND product_id = ?`,
+    [quantity, saleId, productId],
+  );
+
+  const [result] = await connection.execute(query, [saleId, productId]);
+
+  return result;
+};
 
 module.exports = {
   findAllSales,
   findByIdSales,
   insertSales,
   deleteSales,
+  updateSales,
 };

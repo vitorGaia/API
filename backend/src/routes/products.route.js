@@ -4,6 +4,8 @@ const { validateProductName } = require('../middlewares');
 
 route.get('/', productsController.findAllProducts);
 
+route.get('/search', productsController.findByNameProducts);
+
 route.get('/:id', productsController.findByIdProducts);
 
 route.post('/', validateProductName, productsController.insertProducts);
