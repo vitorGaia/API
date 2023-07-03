@@ -11,6 +11,7 @@ const {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
   insertSalesResponseOk,
+  updateSalesResponseOk,
 } = require('../../mocks/sales.mocks');
 
 describe('Testes SALES CONTROLLERS', function () {
@@ -116,6 +117,24 @@ describe('Testes SALES CONTROLLERS', function () {
     await salesController.deleteSales(req, res);
 
     expect(res.status).to.have.been.calledWith(204);
+  });
+
+  it('Atualiza a quantidade de uma venda com sucesso', async function () {
+    sinon.stub(salesService, 'updateSales').resolves({ status: 'SUCCESSFUL', data: updateSalesResponseOk });
+
+    const req = {
+      params: { saleId: 1, productId: 1 },
+      body: { quantity: 777 },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await salesController.updateSales(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updateSalesResponseOk);
   });
 
   afterEach(function () {

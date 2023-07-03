@@ -6,6 +6,7 @@ const {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
   insertSalesResponseOk,
+  updateSalesResponseOk,
 } = require('../../mocks/sales.mocks');
 
 describe('Testes SALES SERVICES', function () {
@@ -77,6 +78,36 @@ describe('Testes SALES SERVICES', function () {
     const { status } = await salesService.deleteSales(1);
 
     expect(status).to.be.equal('DELETED');
+  });
+
+  it('Tenta atualizar a quantidade de uma venda com saleId inexistente', async function () {
+    sinon.stub(salesModel, 'updateSales').resolves('Sale not found');
+
+    const { status, data } = await salesService.updateSales(999, 1, { quantity: 777 });
+
+    expect(status).to.be.equal('NOT_FOUND');
+    expect(data.message).to.be.a('string');
+    expect(data.message).to.be.equal('Sale not found');
+  });
+
+  it('Tenta atualizar a quantidade de uma venda com productId inexistente', async function () {
+    sinon.stub(salesModel, 'updateSales').resolves('Product not found in sale');
+
+    const { status, data } = await salesService.updateSales(1, 999, { quantity: 777 });
+
+    expect(status).to.be.equal('NOT_FOUND');
+    expect(data.message).to.be.a('string');
+    expect(data.message).to.be.equal('Product not found in sale');
+  });
+
+  it('Atualiza a quantidade de um produto vendido com sucesso', async function () {
+    sinon.stub(salesModel, 'updateSales').resolves([updateSalesResponseOk]);
+
+    const { status, data } = await salesService.updateSales(1, 1, { quantity: 777 });
+
+    expect(status).to.be.equal('SUCCESSFUL');
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal(updateSalesResponseOk);
   });
 
   afterEach(function () {

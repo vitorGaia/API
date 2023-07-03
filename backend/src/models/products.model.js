@@ -59,11 +59,11 @@ const deleteProducts = async (id) => {
 const findByNameProducts = async (productName) => {
   const [products] = await connection.execute('SELECT * FROM products');
 
+  if (!productName) return products;
+
   const filteredProducts = products.filter(({ name }) => name.includes(productName));
 
-  if (filteredProducts) return filteredProducts;
-
-  return products;
+  return filteredProducts;
 };
 
 module.exports = {

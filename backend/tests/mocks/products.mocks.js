@@ -45,6 +45,13 @@ const updateProductsResponseOk = {
   name: 'Capacete do Pacificador',
 };
 
+const findByNameProductsResponseOk = [
+  {
+    id: 1,
+    name: 'Martelo de Thor',
+  },
+];
+
 module.exports = {
   findAllProductsResponseOk,
   findAllProductsResponseOkNormalized,
@@ -52,4 +59,5 @@ module.exports = {
   findByIdProductsResponseError,
   insertProductsResponseOk,
   updateProductsResponseOk,
+  findByNameProductsResponseOk,
 };

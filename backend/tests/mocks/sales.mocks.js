@@ -46,8 +46,16 @@ const insertSalesResponseOk = {
   ],
 };
 
+const updateSalesResponseOk = {
+  date: '2023-05-06T03:14:28.000Z',
+  productId: 1,
+  quantity: 777,
+  saleId: 1,
+};
+
 module.exports = {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
   insertSalesResponseOk,
+  updateSalesResponseOk,
 };

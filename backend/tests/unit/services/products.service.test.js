@@ -7,6 +7,7 @@ const {
   findByIdProductsResponseOk,
   insertProductsResponseOk,
   updateProductsResponseOk,
+  findByNameProductsResponseOk,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS SERVICES', function () {
@@ -89,6 +90,16 @@ describe('Testes PRODUCTS SERVICES', function () {
     const { status } = await productsService.deleteProducts(999);
 
     expect(status).to.be.equal('DELETED');
+  });
+
+  it('Busca produto pelo nome com sucesso', async function () {
+    sinon.stub(productsModel, 'findByNameProducts').resolves(findByNameProductsResponseOk);
+
+    const { status, data } = await productsService.findByNameProducts('Martelo');
+
+    expect(status).to.be.equal('SUCCESSFUL');
+    expect(data).to.be.an('array');
+    expect(data).to.be.deep.equal(findByNameProductsResponseOk);
   });
 
   afterEach(function () {

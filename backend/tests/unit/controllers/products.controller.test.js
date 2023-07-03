@@ -12,6 +12,7 @@ const {
   findByIdProductsResponseOk,
   insertProductsResponseOk,
   updateProductsResponseOk,
+  findByNameProductsResponseOk,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS CONTROLLERS', function () {
@@ -134,6 +135,25 @@ describe('Testes PRODUCTS CONTROLLERS', function () {
     await productsController.deleteProducts(req, res);
 
     expect(res.status).to.have.been.calledWith(204);
+  });
+
+  it('Busca produto por nome com sucesso', async function () {
+    sinon.stub(productsService, 'findByNameProducts').resolves({ status: 'SUCCESSFUL', data: findByNameProductsResponseOk });
+
+    const req = {
+      params: { },
+      body: { },
+      query: { q: 'Martelo' },
+    };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub(),
+    };
+
+    await productsController.findByNameProducts(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(findByNameProductsResponseOk);
   });
 
   afterEach(function () {

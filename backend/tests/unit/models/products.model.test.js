@@ -7,6 +7,7 @@ const {
   findByIdProductsResponseOk,
   insertProductsResponseOk,
   findAllProductsResponseOkNormalized,
+  findByNameProductsResponseOk,
 } = require('../../mocks/products.mocks');
 
 describe('Testes PRODUCTS MODEL', function () {
@@ -88,6 +89,24 @@ describe('Testes PRODUCTS MODEL', function () {
     const response = await productsModel.deleteProducts(3);
   
     expect(response).to.equal('DELETED');
+  });
+
+  it('Busca produto pelo nome com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([findAllProductsResponseOkNormalized]);
+
+    const response = await productsModel.findByNameProducts('Martelo');
+
+    expect(response).to.be.an('array');
+    expect(response).to.be.deep.equal(findByNameProductsResponseOk);
+  });
+
+  it('Busca produto inexistente pelo nome com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves([findAllProductsResponseOkNormalized]);
+
+    const response = await productsModel.findByNameProducts();
+
+    expect(response).to.be.an('array');
+    expect(response).to.equal(findAllProductsResponseOkNormalized);
   });
 
   afterEach(function () {

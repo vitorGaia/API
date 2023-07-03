@@ -6,6 +6,7 @@ const {
   findAllSalesResponseOk,
   findByIdSalesResponseOk,
   insertSalesResponseOk,
+  updateSalesResponseOk,
 } = require('../../mocks/sales.mocks');
 
 describe('Testes SALES MODEL', function () {
@@ -86,6 +87,49 @@ describe('Testes SALES MODEL', function () {
     const response = await salesModel.deleteSales(1);
   
     expect(response).to.equal('DELETED');
+  });
+
+  it('Tenta atualizar a quantidade de uma venda com saleId inexistente', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllSalesResponseOk])
+    .onSecondCall()
+    .resolves()
+    .onThirdCall()
+    .resolves();
+
+    const response = await salesModel.updateSales(999, 1, { quantity: 777 });
+
+    expect(response).to.be.equal('Sale not found');
+  });
+
+  it('Tenta atualizar a quantidade de uma venda com productId inexistente', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllSalesResponseOk])
+    .onSecondCall()
+    .resolves()
+    .onThirdCall()
+    .resolves();
+
+    const response = await salesModel.updateSales(1, 999, { quantity: 777 });
+
+    expect(response).to.be.equal('Product not found in sale');
+  });
+
+  it('Atualiza a quantidade de um produto vendido com sucesso', async function () {
+    sinon.stub(connection, 'execute')
+    .onFirstCall()
+    .resolves([findAllSalesResponseOk])
+    .onSecondCall()
+    .resolves()
+    .onThirdCall()
+    .resolves([updateSalesResponseOk]);
+
+    const response = await salesModel.updateSales(1, 1, { quantity: 777 });
+
+    expect(response).to.be.an('object');
+    expect(response).to.be.deep.equal(updateSalesResponseOk);
   });
 
   afterEach(function () {

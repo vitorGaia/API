@@ -10,22 +10,6 @@ const { productsController } = require('../../../src/controllers');
 const middlewares = require('../../../src/middlewares');
 
 describe('Testa o middleware de validação do nome', function () {
-  /* it('Tenta fazer uma requisição sem corpo', async function () {
-    const stubResponse = {
-      status: 404,
-      body: { message: 'Product not found' },
-    };
-  
-    sinon.stub(productsController, 'insertProducts').resolves(stubResponse);
-  
-    const response = await chai.request(app)
-      .post('/products')
-      .send(undefined);
-  
-    expect(response).to.have.status(404);
-    expect(response.body).to.deep.equal({ message: 'Product not found' });
-  }); */
-
   it('Tenta inserir un nome menor que 5 chars no db', async function () {
     this.timeout(5000);
     
